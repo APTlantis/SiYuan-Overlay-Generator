@@ -37,6 +37,14 @@ impl ProjectModel {
             entries: Vec::new(),
         }
     }
+
+    /// Returns the count of entries of one structural kind.
+    pub fn count_kind(&self, kind: EntryKind) -> usize {
+        self.entries
+            .iter()
+            .filter(|entry| entry.kind == kind)
+            .count()
+    }
 }
 
 #[cfg(test)]
