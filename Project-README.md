@@ -4,16 +4,16 @@ This is the Rust implementation and PPS governance package for a local command-l
 
 ## Read First
 
-1. `../SiYuan-Overlay-Generator.manifest.toml`
-2. `Project-Proposal.md`
-3. `Scope-Boundary.md`
-4. `Success-Criteria.md`
-5. `Risk-Assessment.md`
-6. `Architecture.md`
-7. `Discovery-Contract.md`
-8. `Import-Validation-Plan.md`
-9. `Package-Layout.md`
-10. `Roadmap.md`
+1. `SiYuan-Overlay-Generator.manifest.toml`
+2. `docs/Project-Proposal.md`
+3. `docs/Scope-Boundary.md`
+4. `docs/Success-Criteria.md`
+5. `docs/Risk-Assessment.md`
+6. `docs/Architecture.md`
+7. `docs/Discovery-Contract.md`
+8. `docs/Import-Validation-Plan.md`
+9. `docs/Package-Layout.md`
+10. `docs/Roadmap.md`
 
 ## Governance
 
