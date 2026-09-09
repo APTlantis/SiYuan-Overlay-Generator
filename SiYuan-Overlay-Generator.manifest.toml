@@ -43,7 +43,7 @@ completion_percent = 0
 root = ""
 docs = "docs"
 source = "src"
-artifacts = ""
+artifacts = "artifacts"
 data = ""
 
 [documentation]

@@ -1,18 +1,38 @@
 use siyuan_overlay_generator::{
     discovery::discover,
     model::{EntryKind, ProjectModel},
+    projection::generate,
 };
 
-const HELP: &str = "SiYuan Project Exploration Overlay Generator\n\nUsage:\n  siyuan-overlay-generator inspect <SOURCE>\n\nCommands:\n  inspect <SOURCE>  Read a directory tree into the normalized project model.\n\nThe inspect command is read-only and reports structural discovery only.\nPackage generation is not implemented yet.\n\nOptions:\n  -h, --help       Print help\n  -V, --version    Print version";
+const HELP: &str = "SiYuan Project Exploration Overlay Generator\n\nUsage:\n  siyuan-overlay-generator inspect <SOURCE>\n  siyuan-overlay-generator generate <SOURCE> <OUTPUT.zip>\n\nCommands:\n  inspect <SOURCE>                Read a directory tree into the normalized model.\n  generate <SOURCE> <OUTPUT.zip>  Write a new inspectable Markdown ZIP package.\n\nSource trees are read-only. The generator never writes to a SiYuan vault.\n\nOptions:\n  -h, --help       Print help\n  -V, --version    Print version";
 
 fn main() {
     match std::env::args().nth(1).as_deref() {
         Some("-h" | "--help") | None => println!("{HELP}"),
         Some("-V" | "--version") => println!("{}", env!("CARGO_PKG_VERSION")),
         Some("inspect") => inspect(std::env::args().nth(2)),
+        Some("generate") => generate_command(std::env::args().nth(2), std::env::args().nth(3)),
         Some(_) => {
             eprintln!("unknown command; run --help for usage");
             std::process::exit(2);
+        }
+    }
+}
+
+fn generate_command(source: Option<String>, output: Option<String>) {
+    let (Some(source), Some(output)) = (source, output) else {
+        eprintln!("generate requires a source directory and a new output .zip path");
+        std::process::exit(2);
+    };
+    match generate(&source, &output) {
+        Ok(report) => println!(
+            "Generated {} documents in {}",
+            report.document_count,
+            report.output_path.display()
+        ),
+        Err(error) => {
+            eprintln!("generation failed: {error}");
+            std::process::exit(1);
         }
     }
 }

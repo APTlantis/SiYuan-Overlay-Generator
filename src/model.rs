@@ -18,6 +18,8 @@ pub struct ProjectEntry {
     /// Path relative to `ProjectModel::source_root`.
     pub relative_path: PathBuf,
     pub kind: EntryKind,
+    pub representation: Option<Representation>,
+    pub byte_size: u64,
 }
 
 /// Structural resource kinds needed before content classification is added.
@@ -27,6 +29,14 @@ pub enum EntryKind {
     File,
     Symlink,
     Other,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Representation {
+    Markdown,
+    Source,
+    Text,
+    Artifact,
 }
 
 impl ProjectModel {
@@ -43,6 +53,13 @@ impl ProjectModel {
         self.entries
             .iter()
             .filter(|entry| entry.kind == kind)
+            .count()
+    }
+
+    pub fn count_representation(&self, representation: Representation) -> usize {
+        self.entries
+            .iter()
+            .filter(|entry| entry.representation == Some(representation))
             .count()
     }
 }

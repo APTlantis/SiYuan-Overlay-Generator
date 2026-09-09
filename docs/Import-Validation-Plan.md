@@ -2,8 +2,14 @@
 
 ## Status
 
-**Pending a local SiYuan environment.** No v0.1 package layout or import claim
-is approved by this plan alone.
+**Portable target confirmed; generated-package validation pending.** On
+2026-09-09, a live local SiYuan v3.8.3 instance exposed `Main Menu` → `Data
+migration` → `Markdown .zip` under "Import from other formats or apps." The
+v0.1 package target is therefore a standard Markdown `.zip`, not a native
+SiYuan archive or direct vault write.
+
+No v0.1 import claim is approved by this plan alone. A generated package must
+still be imported and inspected using the procedure below.
 
 ## Fixture
 
@@ -14,12 +20,12 @@ fixture before and after generation.
 
 ## Validation Procedure
 
-1. Generate a portable package from the fixture using the future `generate`
-   command.
+1. Generate a Markdown `.zip` package from the fixture using the future
+   `generate` command.
 2. Inspect the package on disk before import. Confirm it contains an overview,
    directory landing pages, indexes, provenance, source/document wrappers,
    artifact records, and structure visualization.
-3. Import it using SiYuan's ordinary supported portable import workflow, never
+3. Import it through `Main Menu` → `Data migration` → `Markdown .zip`, never
    through native storage manipulation.
 4. In SiYuan, open the root overview and follow links to a directory, Markdown
    document, source wrapper, and artifact record.

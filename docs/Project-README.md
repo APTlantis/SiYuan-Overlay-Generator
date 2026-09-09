@@ -12,7 +12,8 @@ This is the Rust implementation and PPS governance package for a local command-l
 6. `Architecture.md`
 7. `Discovery-Contract.md`
 8. `Import-Validation-Plan.md`
-9. `Roadmap.md`
+9. `Package-Layout.md`
+10. `Roadmap.md`
 
 ## Governance
 

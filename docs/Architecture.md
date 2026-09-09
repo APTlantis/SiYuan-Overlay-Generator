@@ -48,10 +48,10 @@ before and after discovery to prove the scan does not modify it.
 
 ## Next Implementation Evidence
 
-Before selecting an import-package layout, validate a small representative
-fixture through SiYuan's supported portable import path. The result should guide
-the CLI contract, output layout, and first projection tests.
+The supported portable target has been checked in a live local SiYuan v3.8.3
+instance: `Main Menu` → `Data migration` → `Markdown .zip`. Projection will
+produce an inspectable Markdown ZIP, rather than use native SiYuan data.
 
-The repeatable procedure and pass condition are in
-`docs/Import-Validation-Plan.md`. That environment-dependent check is pending;
+The repeatable package-import procedure and pass condition are in
+`docs/Import-Validation-Plan.md`. Generated-package validation remains pending;
 no implementation currently claims portable-package compatibility.

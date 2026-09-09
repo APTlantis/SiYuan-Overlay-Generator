@@ -1,11 +1,14 @@
 //! Deterministic, read-only filesystem discovery.
 
 use std::{
-    fmt, fs, io,
+    fmt, fs,
+    io::{self, Read},
     path::{Path, PathBuf},
 };
 
-use crate::model::{EntryKind, ProjectEntry, ProjectModel};
+use crate::model::{EntryKind, ProjectEntry, ProjectModel, Representation};
+
+const INLINE_LIMIT_BYTES: u64 = 1_048_576;
 
 /// Discovers structural facts from `source_root` without following symlinks or
 /// creating, changing, or deleting source-tree content.
@@ -65,9 +68,22 @@ fn discover_directory(
             .expect("discovery paths always remain below the discovery root")
             .to_path_buf();
 
+        let byte_size = metadata.len();
+        let representation = if kind == EntryKind::File {
+            Some(
+                classify_file(&path, byte_size).map_err(|source| DiscoveryError::ReadEntry {
+                    path: path.clone(),
+                    source,
+                })?,
+            )
+        } else {
+            None
+        };
         entries.push(ProjectEntry {
             relative_path,
             kind,
+            representation,
+            byte_size,
         });
 
         if kind == EntryKind::Directory {
@@ -76,6 +92,52 @@ fn discover_directory(
     }
 
     Ok(())
+}
+
+fn classify_file(path: &Path, byte_size: u64) -> io::Result<Representation> {
+    let extension = path
+        .extension()
+        .and_then(|value| value.to_str())
+        .unwrap_or_default();
+    if matches!(
+        extension,
+        "bin" | "dat" | "exe" | "dll" | "png" | "jpg" | "jpeg" | "gif" | "zip" | "pdf"
+    ) || byte_size > INLINE_LIMIT_BYTES
+    {
+        return Ok(Representation::Artifact);
+    }
+    let mut sample = Vec::new();
+    fs::File::open(path)?.take(8_192).read_to_end(&mut sample)?;
+    if sample.contains(&0) || std::str::from_utf8(&sample).is_err() {
+        return Ok(Representation::Artifact);
+    }
+    if matches!(extension, "md" | "markdown") {
+        Ok(Representation::Markdown)
+    } else if matches!(
+        extension,
+        "rs" | "py"
+            | "js"
+            | "ts"
+            | "tsx"
+            | "jsx"
+            | "c"
+            | "h"
+            | "cpp"
+            | "hpp"
+            | "cs"
+            | "java"
+            | "go"
+            | "rb"
+            | "php"
+            | "swift"
+            | "kt"
+            | "sh"
+            | "ps1"
+    ) {
+        Ok(Representation::Source)
+    } else {
+        Ok(Representation::Text)
+    }
 }
 
 fn entry_kind(file_type: &fs::FileType) -> EntryKind {
