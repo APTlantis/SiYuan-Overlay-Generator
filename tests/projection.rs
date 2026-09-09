@@ -27,8 +27,8 @@ fn generation_creates_an_inspectable_markdown_zip_without_changing_source() {
     assert!(package.starts_with(b"PK\x03\x04"));
     assert!(
         package
-            .windows(b"README.md".len())
-            .any(|window| window == b"README.md")
+            .windows(b"Project Overview.md".len())
+            .any(|window| window == b"Project Overview.md")
     );
     assert!(
         package
@@ -37,8 +37,13 @@ fn generation_creates_an_inspectable_markdown_zip_without_changing_source() {
     );
     assert!(
         package
-            .windows(b"Artifacts/vendor/opaque.bin.md".len())
-            .any(|window| window == b"Artifacts/vendor/opaque.bin.md")
+            .windows(b"Artifacts/_assets/logo.dat.md".len())
+            .any(|window| window == b"Artifacts/_assets/logo.dat.md")
+    );
+    assert!(
+        !package
+            .windows(b"representative-project/Project Overview.md".len())
+            .any(|window| window == b"representative-project/Project Overview.md")
     );
     fs::remove_file(output).expect("temporary package is removable");
 }

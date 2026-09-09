@@ -2,14 +2,19 @@
 
 ## Status
 
-**Portable target confirmed; generated-package validation pending.** On
+**Portable import validated; layout refinement in progress.** On
 2026-09-09, a live local SiYuan v3.8.3 instance exposed `Main Menu` → `Data
 migration` → `Markdown .zip` under "Import from other formats or apps." The
 v0.1 package target is therefore a standard Markdown `.zip`, not a native
 SiYuan archive or direct vault write.
 
-No v0.1 import claim is approved by this plan alone. A generated package must
-still be imported and inspected using the procedure below.
+On the same environment, the representative fixture package was successfully
+imported into the `Misc` notebook. Its structure map and directory landing page
+rendered correctly. This exposed one layout refinement: SiYuan creates an
+outer project folder for the ZIP, so generator ZIPs must not add a second root
+folder. The importer also omits document branches whose package path contains a
+directory named `assets`; the generator maps that package-only component to
+`_assets`. The current projection follows both rules.
 
 ## Fixture
 

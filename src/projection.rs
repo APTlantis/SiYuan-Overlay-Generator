@@ -47,22 +47,13 @@ pub fn generate(
 }
 
 fn render(model: &ProjectModel) -> Result<Vec<(String, Vec<u8>)>, GenerationError> {
-    let root = format!(
-        "{}/",
-        safe_name(
-            model
-                .source_root
-                .file_name()
-                .and_then(|value| value.to_str())
-                .unwrap_or("project")
-        )
-    );
+    let root = "";
     let mut files = vec![];
     let generated = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .unwrap_or_default()
         .as_secs();
-    files.push((format!("{root}README.md"), format!("# Project Overview\n\nThis is a derived, read-only reference snapshot. The source tree remains authoritative.\n\n- Source: `{}`\n- Generated at: Unix epoch seconds `{generated}`\n- Entries: {}\n- [Project index](Project Index.md)\n- [Directory index](Directory Index.md)\n- [Structure map](Structure.md)\n", model.source_root.display(), model.entries.len()).into_bytes()));
+    files.push((format!("{root}Project Overview.md"), format!("# Project Overview\n\nThis is a derived, read-only reference snapshot. The source tree remains authoritative.\n\n- Source: `{}`\n- Generated at: Unix epoch seconds `{generated}`\n- Entries: {}\n- [Project index](Project Index.md)\n- [Directory index](Directory Index.md)\n- [Structure map](Structure.md)\n", model.source_root.display(), model.entries.len()).into_bytes()));
     files.push((
         format!("{root}Project Index.md"),
         render_project_index(model).into_bytes(),
@@ -82,8 +73,8 @@ fn render(model: &ProjectModel) -> Result<Vec<(String, Vec<u8>)>, GenerationErro
     {
         files.push((
             format!(
-                "{root}Directories/{}/README.md",
-                path_string(&entry.relative_path)
+                "{root}Directories/{}/Directory.md",
+                portable_path(&entry.relative_path)
             ),
             render_directory(model, entry).into_bytes(),
         ));
@@ -128,9 +119,9 @@ fn render_directory_index(model: &ProjectModel) -> String {
         .filter(|entry| entry.kind == EntryKind::Directory)
     {
         output.push_str(&format!(
-            "- [{}](Directories/{}/README.md)\n",
+            "- [{}](Directories/{}/Directory.md)\n",
             path_string(&entry.relative_path),
-            path_string(&entry.relative_path)
+            portable_path(&entry.relative_path)
         ));
     }
     output
@@ -146,8 +137,8 @@ fn render_directory(model: &ProjectModel, directory: &ProjectEntry) -> String {
         if entry.relative_path.parent() == Some(directory_path.as_path()) {
             let destination = if entry.kind == EntryKind::Directory {
                 format!(
-                    "../../Directories/{}/README.md",
-                    path_string(&entry.relative_path)
+                    "../../Directories/{}/Directory.md",
+                    portable_path(&entry.relative_path)
                 )
             } else {
                 format!("../../{}", output_name(entry))
@@ -207,27 +198,29 @@ fn render_structure(model: &ProjectModel) -> String {
 
 fn output_name(entry: &ProjectEntry) -> String {
     match entry.representation.expect("file representation") {
-        Representation::Markdown => format!("Documents/{}", path_string(&entry.relative_path)),
+        Representation::Markdown => format!("Documents/{}", portable_path(&entry.relative_path)),
         Representation::Source | Representation::Text => {
-            format!("Resources/{}.md", path_string(&entry.relative_path))
+            format!("Resources/{}.md", portable_path(&entry.relative_path))
         }
-        Representation::Artifact => format!("Artifacts/{}.md", path_string(&entry.relative_path)),
+        Representation::Artifact => format!("Artifacts/{}.md", portable_path(&entry.relative_path)),
     }
 }
 fn path_string(path: &Path) -> String {
     path.to_string_lossy().replace('\\', "/")
 }
-fn safe_name(value: &str) -> String {
-    value
-        .chars()
-        .map(|character| {
-            if character.is_ascii_alphanumeric() || matches!(character, '-' | '_') {
-                character
-            } else {
-                '-'
-            }
-        })
-        .collect()
+
+/// Avoid import-time collisions with SiYuan's special `assets` directory.
+/// Source-facing labels always retain the original relative path.
+fn portable_path(path: &Path) -> String {
+    path.components()
+        .map(
+            |component| match component.as_os_str().to_string_lossy().as_ref() {
+                "assets" => "_assets".to_owned(),
+                value => value.to_owned(),
+            },
+        )
+        .collect::<Vec<_>>()
+        .join("/")
 }
 fn label(value: Representation) -> &'static str {
     match value {
