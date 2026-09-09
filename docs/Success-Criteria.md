@@ -20,3 +20,14 @@ v0.1.0 is complete when:
 Only missing, broken, contradictory, unsafe, or unverified items required above lower v0.1.0 completion.
 
 Future capabilities such as native SiYuan structures, AI summaries, refresh, dependency analysis, and multi-project views are evolution findings and do not lower completion.
+
+## Current Evidence (Not a Release Claim)
+
+- The representative fixture is discovered and generated without source changes;
+  automated tests fingerprint it before and after both operations.
+- The resulting Markdown ZIP was imported into SiYuan v3.8.3 and inspected for
+  project orientation, directory navigation, code wrappers, artifact records,
+  the project index, and the structure map.
+- The implementation remains experimental because required exclusion controls,
+  broader representative coverage, final CTS contract review, and release
+  evidence are still incomplete.

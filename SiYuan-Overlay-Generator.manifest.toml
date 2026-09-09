@@ -17,7 +17,7 @@ tags = ["siyuan", "project-exploration", "reference-snapshot", "cli"]
 
 [project]
 type = "command-tool"
-stage = "bootstrap"
+stage = "implementation"
 version = "0.1.0"
 
 [governance]
@@ -33,11 +33,11 @@ target_version = "0.1.0"
 native_siyuan_structures = "deferred"
 
 [lifecycle]
-state = "bootstrap"
+state = "implementation"
 created = "2026-09-09"
 last_updated = "2026-09-09"
 maintainer = "Herb"
-completion_percent = 0
+completion_percent = 35
 
 [paths]
 root = ""
@@ -47,11 +47,11 @@ artifacts = "artifacts"
 data = ""
 
 [documentation]
-readme = "Project-README.md"
+readme = "README.md"
 proposal = "Project-Proposal.md"
 roadmap = "Roadmap.md"
 architecture = "Architecture.md"
-release_notes = ""
+release_notes = "CHANGELOG.md"
 
 [runtime]
 platform = "local"
@@ -68,21 +68,22 @@ external_dependencies = ["SiYuan"]
 
 [state]
 stability = "experimental"
-active_development = false
+active_development = true
 known_gaps = [
-  "The CLI contract and portable package layout require implementation discovery.",
-  "SiYuan portable-import behavior needs early validation against a representative fixture."
+  "Exclusion controls, configurable scan limits, and a secret-safety policy are not implemented.",
+  "Git metadata and a human-readable timestamp are not yet included in provenance.",
+  "The current CLI contract is provisional and needs CTS release review."
 ]
-technical_debt = "none-known"
+technical_debt = "The dependency-free ZIP writer supports store-only archives and needs broader compatibility coverage before release."
 
 [agent]
 read_first = [
   "SiYuan-Overlay-Generator.manifest.toml",
-  "docs/Project-README.md",
+  "Project-README.md",
   "docs/Project-Proposal.md",
   "docs/Architecture.md",
   "docs/Roadmap.md"
 ]
 governing_context = "PPS defines project intent and boundaries. WGS governs workspace placement and lifecycle. CTS governs the v0.1 command surface and release-side automation behavior."
 safe_to_modify = false
-notes = "Do not promote native SiYuan Attribute Views, direct workspace mutation, live synchronization, AI requirements, or IDE/source-control behavior into v0.1 without revising the proposal boundary."
+notes = "Implemented vertical slice: deterministic read-only discovery and Markdown ZIP projection, verified with SiYuan v3.8.3. Do not promote native SiYuan Attribute Views, direct workspace mutation, live synchronization, AI requirements, or IDE/source-control behavior into v0.1 without revising the proposal boundary."

@@ -1,6 +1,7 @@
 # SiYuan Project Exploration Overlay Generator
 
-This is the Rust implementation and PPS governance package for a local command-line tool that transforms existing software projects or arbitrary directory trees into portable, read-oriented SiYuan exploration snapshots.
+This is the governance guide for the Rust implementation. For public usage,
+start with `README.md`.
 
 ## Read First
 
@@ -13,7 +14,8 @@ This is the Rust implementation and PPS governance package for a local command-l
 7. `docs/Discovery-Contract.md`
 8. `docs/Import-Validation-Plan.md`
 9. `docs/Package-Layout.md`
-10. `docs/Roadmap.md`
+10. `docs/CLI-Contract.md`
+11. `docs/Roadmap.md`
 
 ## Governance
 
@@ -23,10 +25,12 @@ This is the Rust implementation and PPS governance package for a local command-l
 
 ## Current State
 
-- WGS lifecycle: `bootstrap`
+- WGS lifecycle: `implementation`
 - PPS readiness: `ready`
 - Target version: `0.1.0`
-- Delivery surface: Rust CLI (`siyuan-overlay-generator` package)
+- Delivery surface: experimental Rust CLI (`siyuan-overlay-generator` package)
+- Validation: representative Markdown ZIP imported successfully with SiYuan
+  v3.8.3; see `docs/Import-Validation-Plan.md`.
 - Native SiYuan structures: deferred
 
 The generated SiYuan material is a reference snapshot. It is not the authoritative source tree.
