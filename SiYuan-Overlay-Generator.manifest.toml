@@ -1,0 +1,88 @@
+[manifest]
+schema = "APTlantis Entity Manifest"
+schema_version = "2.4"
+manifest_type = "project"
+canonical_name = "SiYuan Project Exploration Overlay Generator"
+last_updated = "2026-09-09"
+maintainer = "Herb"
+
+[entity]
+id = "siyuan-project-exploration-overlay-generator"
+title = "SiYuan Project Exploration Overlay Generator"
+kind = "project"
+class = "command-tool"
+status = "active"
+description = "Local CLI that transforms software projects and directory trees into portable, read-oriented SiYuan exploration snapshots while leaving the source project authoritative and untouched."
+tags = ["siyuan", "project-exploration", "reference-snapshot", "cli"]
+
+[project]
+type = "command-tool"
+stage = "bootstrap"
+version = "0.1.0"
+
+[governance]
+primary_standard = "PPS"
+release_standard = "CTS"
+additional_standards = ["WGS"]
+proposal_required = true
+
+[proposal]
+readiness = "ready"
+theme = "Project Exploration Overlay"
+target_version = "0.1.0"
+native_siyuan_structures = "deferred"
+
+[lifecycle]
+state = "bootstrap"
+created = "2026-09-09"
+last_updated = "2026-09-09"
+maintainer = "Herb"
+completion_percent = 0
+
+[paths]
+root = ""
+docs = "docs"
+source = "src"
+artifacts = ""
+data = ""
+
+[documentation]
+readme = "Project-README.md"
+proposal = "Project-Proposal.md"
+roadmap = "Roadmap.md"
+architecture = "Architecture.md"
+release_notes = ""
+
+[runtime]
+platform = "local"
+language_primary = "Rust"
+languages_used = ["Rust"]
+services = []
+storage = ["local-filesystem"]
+
+[relationships]
+depends_on_projects = []
+used_by_projects = []
+related_projects = []
+external_dependencies = ["SiYuan"]
+
+[state]
+stability = "experimental"
+active_development = false
+known_gaps = [
+  "The CLI contract and portable package layout require implementation discovery.",
+  "SiYuan portable-import behavior needs early validation against a representative fixture."
+]
+technical_debt = "none-known"
+
+[agent]
+read_first = [
+  "SiYuan-Overlay-Generator.manifest.toml",
+  "docs/Project-README.md",
+  "docs/Project-Proposal.md",
+  "docs/Architecture.md",
+  "docs/Roadmap.md"
+]
+governing_context = "PPS defines project intent and boundaries. WGS governs workspace placement and lifecycle. CTS governs the v0.1 command surface and release-side automation behavior."
+safe_to_modify = false
+notes = "Do not promote native SiYuan Attribute Views, direct workspace mutation, live synchronization, AI requirements, or IDE/source-control behavior into v0.1 without revising the proposal boundary."
